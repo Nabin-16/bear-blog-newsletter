@@ -147,7 +147,7 @@ jobs:
                   ]
 
               lines += [
-                  "Thanks for reading,",
+                  "Thanks for reading  ",
                   "ᓚᘏᗢ",
                   "",
                   "> Before sending: check the wording, links, recipient list, and unsubscribe option."
