@@ -5,7 +5,13 @@
       "subject": "New on m.son: Newsletter Automation Test",
       "status": "in_progress",
       "created_at": "2026-10-23T14:50:46.612247+00:00",
-      "recipients": {}
+      "recipients": {
+        "joshinabin132@gmail.com": {
+          "status": "sent",
+          "resend_email_id": "01a1693e-3b4c-7bcd-b9d2-55ad2a8c2966",
+          "sent_at": "2026-10-23T14:50:48.623960+00:00"
+        }
+      }
     }
   }
 }
