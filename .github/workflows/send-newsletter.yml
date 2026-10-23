@@ -1,0 +1,62 @@
+
+name: Send Newsletter
+
+on:
+  workflow_dispatch:
+    inputs:
+      draft_file:
+        description: "Path to the reviewed draft in drafts/"
+        required: true
+        type: string
+      send_now:
+        description: "Choose YES only after reviewing the draft"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Use the same group as the existing draft workflow so their
+# repository writes cannot overlap.
+concurrency:
+  group: prepare-newsletter
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Markdown converter
+        run: python -m pip install "Markdown==3.9"
+
+      - name: Validate approval and send newsletter
+        env:
+          DRAFT_FILE: ${{ inputs.draft_file }}
+          SEND_NOW: ${{ inputs.send_now }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CONFIRMATION_SECRET: ${{ secrets.CONFIRMATION_SECRET }}
+          RESEND_SEGMENT_ID: "22ad98c9-07e1-4d79-bdd5-0b2245b1a150"
+          UNSUBSCRIBE_WORKER: "https://bear-blog-newsletter-signup.joshinabin132.workers.dev"
+          NEWSLETTER_SENDER: "ᓚᘏᗢ <newsletter@newsletter.nabin-joshi.com.np>"
+        run: python scripts/send_newsletter.py
+
+      - name: Show delivery summary
+        if: always()
+        run: |
+          echo "Check the preceding steps for the delivery result."
