@@ -13,7 +13,7 @@ import urllib.request
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
-
+import requests
 import markdown
 
 
@@ -67,13 +67,26 @@ def request_json(url, method="GET", payload=None, headers=None):
             f"HTTP {exc.code} calling {url}: {details[:1000]}"
         ) from exc
 
+def resend_get(url, api_key, params=None):
+    response = requests.get(
+        url,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Accept": "application/json",
+            "User-Agent": "bear-blog-newsletter/1.0",
+        },
+        params=params,
+        timeout=30,
+    )
 
-def resend_request(path, method="GET", payload=None, extra_headers=None):
-    headers = {"Authorization": f"Bearer {RESEND_API_KEY}"}
-    headers.update(extra_headers or {})
-    return request_json(API_BASE + path, method, payload, headers)
+    if response.status_code == 403 and "error 1010" in response.text.lower():
+        raise RuntimeError(
+            "Resend's Cloudflare protection blocked this request. "
+            "No automatic retry; investigate the client or contact Resend support."
+        )
 
-
+    response.raise_for_status()
+    return response.json()
 def load_draft():
     # Only allow a Markdown file directly inside drafts/.
     supplied = Path(DRAFT_FILE)
