@@ -44,6 +44,8 @@ jobs:
 
       - name: Install Markdown converter
         run: python -m pip install "Markdown==3.9"
+      - name: Install dependencies
+        run: python -m pip install "Markdown==3.9" requests
 
       - name: Validate approval and send newsletter
         env:
