@@ -31,7 +31,7 @@
     "drafts/newsletter-20261027-175817.md": {
       "content_hash": "aafb674cb1a7608af7518c4b36b78db8fa171c79ed92fc9e3f0aa3e9c2cfb445",
       "subject": "New on m.son: Before Tomorrow",
-      "status": "in_progress",
+      "status": "sent",
       "created_at": "2026-11-01T15:06:00.441262+00:00",
       "recipients": {
         "joshinabin132@gmail.com": {
@@ -39,7 +39,8 @@
           "resend_email_id": "01a197a5-693b-7c21-a386-070d37a6b611",
           "sent_at": "2026-11-01T15:06:02.505396+00:00"
         }
-      }
+      },
+      "completed_at": "2026-11-01T15:06:03.765028+00:00"
     }
   }
 }
